@@ -1,0 +1,17 @@
+{
+  "name": "fugu",
+  "short_name": "fugu",
+  "theme_color": "#84cc16",
+  "background_color": "#fafafa",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "fugu.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ]
+}
