@@ -1,0 +1,37 @@
+name: Deploy site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+
+    name: Deploy Angular App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v3.5.0
+
+      - name: Use Node.js 20 LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install NPM Modules
+        run: npm install --no-package-lock
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Sync Files
+        uses: burnett01/rsync-deployments@6.0.0
+        with:
+          switches: -avzr --delete
+          path: /dist/fugu/browser/
+          remote_path: /var/www/virtual/jakos/fugu.jakobs.io
+          remote_host: schuster.uberspace.de
+          remote_user: jakos
+          remote_key: ${{ secrets.SSH_KEY }}
