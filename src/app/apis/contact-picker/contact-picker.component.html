@@ -1,0 +1,24 @@
+
+<p-button label="Contact Picker" (onClick)="getContacts()" />
+
+
+<p-table [value]="contacts" [paginator]="true" [rows]="5">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>E-Mail</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-contact>
+    <tr>
+      <td>{{ contact.name }}</td>
+      <td>{{ contact.email}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+{{ contacts | json }}
+
+{{ imageUrl }}
+
+<img [src]="imageUrl" />
