@@ -1,50 +1,57 @@
-import {Component, OnInit} from '@angular/core';
-import {Button} from "primeng/button";
-import {JsonPipe} from "@angular/common";
-import {TableModule} from "primeng/table";
-import {Blob2imgPipe} from "../../blob2img.pipe";
+import { Component, OnInit } from '@angular/core';
+import { Button } from 'primeng/button';
+import { JsonPipe } from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { Blob2imgPipe } from '../../blob2img.pipe';
 
-type Contact = {
-  icon: Blob[]
-  name: string[]
-  email: string[]
-  tel: string[]
+interface Contact {
+  icon: Blob[];
+  name: string[];
+  email: string[];
+  tel: string[];
 }
 
 @Component({
   selector: 'app-contact-picker',
   standalone: true,
-  imports: [
-    Button,
-    JsonPipe,
-    TableModule,
-    Blob2imgPipe
-  ],
+  imports: [Button, JsonPipe, TableModule, Blob2imgPipe],
   templateUrl: './contact-picker.component.html',
-  styleUrl: './contact-picker.component.css'
+  styleUrl: './contact-picker.component.css',
 })
-export class ContactPickerComponent {
-  supported = "contacts" in navigator && "ContactsManager" in window;
+export class ContactPickerComponent implements OnInit {
+  supported = 'contacts' in navigator && 'ContactsManager' in window;
+  api = (navigator as any).contacts || (navigator as any).mozContacts;
+
+  supportedProperties: string[] = [];
+
+  errorMessage = '';
 
   contacts: Contact[] = [];
 
+  async ngOnInit() {
+    if (this.supported) {
+      this.supportedProperties = await this.api.getProperties();
+    }
+  }
+
   async getContacts() {
     if (!this.supported) {
-      console.log("Contacts API not supported");
-      return;
+      this.errorMessage = 'Contacts API is not supported in this browser.';
     }
 
-    var api = (
-      (navigator as any).contacts || (navigator as any).mozContacts
-    );
-    try {
-      this.contacts = await api.select(["name", "email", "icon"], {multiple: true});
-      /*if (this.contacts?.[0].icon[0]) {
-        // Display image.
-        this.imageUrl = URL.createObjectURL(this.contacts?.[0].icon[0]);
-      }*/
-    } catch (ex) {
-      console.log(ex);
+    const properties = [];
+    if (this.supportedProperties.includes('name')) {
+      properties.push('name');
+    }
+    if (this.supportedProperties.includes('email')) {
+      properties.push('email');
+    }
+    if (this.supportedProperties.includes('icon')) {
+      properties.push('icon');
+    }
+
+    if (!!this.api?.select) {
+      this.contacts = await this.api.select(properties, { multiple: true });
     }
   }
 }

@@ -2,6 +2,9 @@
 
   <p-button label="Contact Picker" (onClick)="getContacts()"/>
 
+  Supported Properties:
+  {{ supportedProperties | json }}
+
 
   <p-table [value]="contacts" [paginator]="true" [rows]="5">
     <ng-template pTemplate="header">
