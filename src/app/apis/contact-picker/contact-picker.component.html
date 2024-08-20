@@ -1,23 +1,21 @@
 @if (supported) {
-
-  <p-button label="Contact Picker" (onClick)="getContacts()"/>
+  <p-button label="Contact Picker" (onClick)="getContacts()" />
 
   Supported Properties:
   {{ supportedProperties | json }}
 
-
   <p-table [value]="contacts" [paginator]="true" [rows]="5">
     <ng-template pTemplate="header">
       <tr>
-        <th>Icon</th>
+        <th *ngIf="supportedProperties.includes('icon')">Icon</th>
         <th>Name</th>
         <th>E-Mail</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-contact>
       <tr>
-        <td>
-          <img [src]="contact.icon[0] | blob2img" alt="icon"/>
+        <td *ngIf="supportedProperties.includes('icon')">
+          <img [src]="contact.icon[0] | blob2img" alt="icon" />
         </td>
         <td>{{ contact.name }}</td>
         <td>{{ contact.email }}</td>
@@ -26,7 +24,6 @@
   </p-table>
 
   {{ contacts | json }}
-
 } @else {
   <p>Not supported</p>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, NgIf } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { Blob2imgPipe } from '../../blob2img.pipe';
 
@@ -14,7 +14,7 @@ interface Contact {
 @Component({
   selector: 'app-contact-picker',
   standalone: true,
-  imports: [Button, JsonPipe, TableModule, Blob2imgPipe],
+  imports: [Button, JsonPipe, TableModule, Blob2imgPipe, NgIf],
   templateUrl: './contact-picker.component.html',
   styleUrl: './contact-picker.component.css',
 })
@@ -50,7 +50,7 @@ export class ContactPickerComponent implements OnInit {
       properties.push('icon');
     }
 
-    if (!!this.api?.select) {
+    if (this.api?.select) {
       this.contacts = await this.api.select(properties, { multiple: true });
     }
   }
