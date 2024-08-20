@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
 import {JsonPipe} from "@angular/common";
 import {TableModule} from "primeng/table";
@@ -24,12 +24,12 @@ type Contact = {
   styleUrl: './contact-picker.component.css'
 })
 export class ContactPickerComponent {
+  supported = "contacts" in navigator && "ContactsManager" in window;
 
   contacts: Contact[] = [];
 
   async getContacts() {
-    const supported = "contacts" in navigator && "ContactsManager" in window;
-    if (!supported) {
+    if (!this.supported) {
       console.log("Contacts API not supported");
       return;
     }

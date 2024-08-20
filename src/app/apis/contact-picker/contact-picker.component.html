@@ -1,24 +1,38 @@
+@if (supported) {
 
-<p-button label="Contact Picker" (onClick)="getContacts()" />
+  <p-button label="Contact Picker" (onClick)="getContacts()"/>
 
 
-<p-table [value]="contacts" [paginator]="true" [rows]="5">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Icon</th>
-      <th>Name</th>
-      <th>E-Mail</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-contact>
-    <tr>
-      <td>
-        <img [src]="contact.icon[0] | blob2img" alt="icon" />
-      </td>
-      <td>{{ contact.name }}</td>
-      <td>{{ contact.email}}</td>
-    </tr>
-  </ng-template>
-</p-table>
+  <p-table [value]="contacts" [paginator]="true" [rows]="5">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Icon</th>
+        <th>Name</th>
+        <th>E-Mail</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-contact>
+      <tr>
+        <td>
+          <img [src]="contact.icon[0] | blob2img" alt="icon"/>
+        </td>
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.email }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
 
-{{ contacts | json }}
+  {{ contacts | json }}
+
+} @else {
+  <p>Not supported</p>
+
+  On iOS do the following steps to activate it:
+  <ul>
+    <li>Go to Settings</li>
+    <li>Scroll down to Safari</li>
+    <li>Scroll down to Advanced</li>
+    <li>Enter Experimental Features</li>
+    <li>Enable "Contact Picker Api"</li>
+  </ul>
+}
