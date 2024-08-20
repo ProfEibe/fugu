@@ -1,5 +1,14 @@
-<nav>
-  <img src="https://fugu.jakobs.io/fugu.svg" alt="Fugu" style="width: 50px" />
-  Fugu
-</nav>
+<nav class="flex align-items-center justify-content-between mx-3">
+  <span class="flex align-items-center gap-3">
+    <img src="https://fugu.jakobs.io/fugu.svg" alt="Fugu" style="width: 50px" />
+    <span>Project Fugu</span>
+  </span>
+  <div class="hidden md:block">
+    <p-menubar [model]="items"></p-menubar>
+  </div>
 
+  <div class="block md:hidden">
+    <p-button icon="pi pi-bars" (onClick)="menu.toggle($event)" [rounded]="true" [text]="true" />
+    <p-menu [model]="items" [popup]="true" #menu></p-menu>
+  </div>
+</nav>
