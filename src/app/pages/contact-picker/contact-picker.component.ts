@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
 import { JsonPipe, NgIf } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { Blob2imgPipe } from '../../blob2img.pipe';
+import { Blob2imgPipe } from './blob2img.pipe';
 
 interface Contact {
   icon: Blob[];

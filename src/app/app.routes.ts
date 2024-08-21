@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { BadgeComponent } from './apis/badge/badge.component';
-import { ContactPickerComponent } from './apis/contact-picker/contact-picker.component';
+import { BadgeComponent } from './pages/badge/badge.component';
+import { ContactPickerComponent } from './pages/contact-picker/contact-picker.component';
 
 export const routes: Routes = [
   {
