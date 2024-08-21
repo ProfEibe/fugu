@@ -26,5 +26,21 @@
       "src": "maskable_icon_x512.png",
       "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Badge",
+      "short_name": "Badge",
+      "description": "View the list of podcasts you saved for later",
+      "url": "/badge",
+      "icons": [{ "src": "/maskable_icon_x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Contact Picker",
+      "short_name": "Contacts",
+      "description": "View the list of podcasts you listen to",
+      "url": "/contacts",
+      "icons": [{ "src": "/maskable_icon_x192.png", "sizes": "192x192" }]
+    }
   ]
 }
