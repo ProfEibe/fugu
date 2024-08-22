@@ -1,7 +1,19 @@
 <p-button label="Öffnen" (onClick)="openFSDirectory()" />
 
+{{ currentFileSystemHandle?.kind === 'directory' }}
+
 <div class="grid">
   <div class="col-3">
+    <p-button
+      label="Neuer Ordner"
+      (onClick)="newDirectoryDialog = true"
+      [disabled]="currentFileSystemHandle?.kind !== 'directory'"
+    ></p-button>
+    <p-button
+      label="Neue Datei"
+      (onClick)="newFileDialog = true"
+      [disabled]="currentFileSystemHandle?.kind !== 'directory'"
+    ></p-button>
     <p-tree
       class="w-full"
       [value]="treeNodes"
@@ -13,7 +25,23 @@
     ></p-tree>
   </div>
   <div class="col">
-    Details
+    <p-menubar [model]="menuItems"></p-menubar>
     <textarea pInputTextarea [(ngModel)]="fileContent"></textarea>
   </div>
 </div>
+
+<p-dialog [(visible)]="newDirectoryDialog" header="Neuer Ordner">
+  <input pInputText #newDirectoryName placeholder="Name" />
+  <ng-template pTemplate="footer">
+    <p-button label="Abbrechen" (onClick)="newDirectoryDialog = false"></p-button>
+    <p-button label="Erstellen" (onClick)="createDirectory(newDirectoryName.value)"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="newFileDialog" header="Neue Datei">
+  <input pInputText #newFileName placeholder="Name" />
+  <ng-template pTemplate="footer">
+    <p-button label="Abbrechen" (onClick)="newFileDialog = false"></p-button>
+    <p-button label="Erstellen" (onClick)="createFile(newFileName.value)"></p-button>
+  </ng-template>
+</p-dialog>
