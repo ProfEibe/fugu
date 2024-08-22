@@ -1,0 +1,26 @@
+textarea {
+  background-color: var(--app-editor-bg);
+  box-sizing: border-box;
+  flex-grow: 1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  padding: 2px;
+  white-space: pre;
+  width: 100%;
+  min-height: 80vh;
+}
+
+textarea[disabled] {
+  background-color: var(--app-editor-bg-disabled);
+}
+
+textarea:focus {
+  outline: none;
+}
+
+body.monospace textarea {
+  font-family: monospace;
+}
+
+body.wordwrap textarea {
+  white-space: normal;
+}

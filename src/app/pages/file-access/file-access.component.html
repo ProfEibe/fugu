@@ -1,0 +1,19 @@
+<p-button label="Öffnen" (onClick)="openFSDirectory()" />
+
+<div class="grid">
+  <div class="col-3">
+    <p-tree
+      class="w-full"
+      [value]="treeNodes"
+      loadingMode="icon"
+      selectionMode="single"
+      [(selection)]="selectedFile"
+      (onNodeExpand)="loadTreeDirectory($event)"
+      (onNodeSelect)="loadFile($event)"
+    ></p-tree>
+  </div>
+  <div class="col">
+    Details
+    <textarea pInputTextarea [(ngModel)]="fileContent"></textarea>
+  </div>
+</div>

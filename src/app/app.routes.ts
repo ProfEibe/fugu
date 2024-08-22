@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { BadgeComponent } from './pages/badge/badge.component';
 import { ContactPickerComponent } from './pages/contact-picker/contact-picker.component';
 import { HomeComponent } from './pages/home/home.component';
+import { FileAccessComponent } from './pages/file-access/file-access.component';
 
 export const routes: Routes = [
   {
@@ -16,5 +17,9 @@ export const routes: Routes = [
   {
     path: 'contacts',
     component: ContactPickerComponent,
+  },
+  {
+    path: 'files',
+    component: FileAccessComponent,
   },
 ];

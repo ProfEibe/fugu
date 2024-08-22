@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.addCapability('Badging', 'setAppBadge' in navigator);
     this.addCapability('Contacts', 'contacts' in navigator && 'ContactsManager' in window);
+    this.addCapability('File System Access', 'showOpenFilePicker' in self);
     this.addCapability('Clipboard', 'clipboard' in navigator);
     this.addCapability('HID', 'hid' in navigator);
     this.addCapability('Serial', 'serial' in navigator);

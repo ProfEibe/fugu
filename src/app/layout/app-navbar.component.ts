@@ -32,6 +32,11 @@ export class AppNavbarComponent {
         icon: 'pi pi-fw pi-users',
         routerLink: '/contacts',
       },
+      {
+        label: 'Files',
+        icon: 'pi pi-fw pi-file',
+        routerLink: '/files',
+      },
     ];
   }
 }
