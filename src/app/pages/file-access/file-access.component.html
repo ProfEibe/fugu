@@ -1,18 +1,18 @@
 <p-button label="Öffnen" (onClick)="openFSDirectory()" />
 
-{{ currentFileSystemHandle?.kind === 'directory' }}
+{{ this.selectedFile?.label }}
 
 <div class="grid">
   <div class="col-3">
     <p-button
       label="Neuer Ordner"
       (onClick)="newDirectoryDialog = true"
-      [disabled]="currentFileSystemHandle?.kind !== 'directory'"
+      [disabled]="this.selectedFile?.data?.kind !== 'directory'"
     ></p-button>
     <p-button
       label="Neue Datei"
       (onClick)="newFileDialog = true"
-      [disabled]="currentFileSystemHandle?.kind !== 'directory'"
+      [disabled]="this.selectedFile?.data?.kind !== 'directory'"
     ></p-button>
     <p-tree
       class="w-full"

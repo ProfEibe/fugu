@@ -28,22 +28,28 @@ import { InputTextModule } from 'primeng/inputtext';
 export class FileAccessComponent {
   treeNodes: TreeNode<FileSystemHandle>[] = [];
   selectedFile: TreeNode<FileSystemHandle> | undefined = undefined;
-  currentFileSystemHandle: FileSystemHandle | undefined = undefined;
   fileContent = '';
 
   menuItems: MenuItem[] = [
     {
       label: 'Speichern',
       icon: 'pi pi-save',
-      command: () => {
-        console.log('Speichern');
+      command: async () => {
+        if (this.selectedFile!.data instanceof FileSystemFileHandle) {
+          const writable = await this.selectedFile!.data?.createWritable();
+          await writable.write(this.fileContent);
+          await writable.close();
+        }
       },
     },
     {
       label: 'Löschen',
       icon: 'pi pi-trash',
       command: async () => {
-        //await this.selectedFile?.data?.remove();
+        if (this.selectedFile?.data) {
+          this.selectedFile.parent?.children?.splice(this.selectedFile.parent.children.indexOf(this.selectedFile), 1);
+          await (this.selectedFile.data as any).remove();
+        }
       },
     },
   ];
@@ -55,12 +61,12 @@ export class FileAccessComponent {
   async openFSDirectory() {
     if ('showDirectoryPicker' in self) {
       const directory = await window.showDirectoryPicker({ mode: 'readwrite' });
-      this.currentFileSystemHandle = directory;
       this.treeNodes = await this.convertDirectoryContentToTreeNodes(directory);
     }
   }
 
   async loadTreeDirectory($event: TreeNodeExpandEvent) {
+    this.selectedFile = $event.node;
     if (!(!$event.node.children || $event.node.children.length === 0)) {
       return;
     }
@@ -107,7 +113,6 @@ export class FileAccessComponent {
   /* Files */
   async loadFile($event: TreeNodeSelectEvent) {
     const handle: FileSystemFileHandle = $event.node.data;
-    this.currentFileSystemHandle = handle;
 
     if (!handle || handle.kind !== 'file') {
       return;
@@ -120,26 +125,30 @@ export class FileAccessComponent {
   }
 
   async createDirectory(value: string) {
-    if (this.currentFileSystemHandle instanceof FileSystemDirectoryHandle) {
-      await this.currentFileSystemHandle.getDirectoryHandle(value, { create: true });
+    if (this.selectedFile!.data instanceof FileSystemDirectoryHandle) {
+      await this.selectedFile!.data.getDirectoryHandle(value, { create: true });
 
-      if (this.selectedFile) {
-        this.selectedFile.children = await this.convertDirectoryContentToTreeNodes(this.currentFileSystemHandle);
-      }
+      this.reloadCurrentDirectory();
     }
 
     this.newDirectoryDialog = false;
   }
 
   async createFile(value: string) {
-    if (this.currentFileSystemHandle instanceof FileSystemDirectoryHandle) {
-      await this.currentFileSystemHandle.getFileHandle(value, { create: true });
+    if (this.selectedFile!.data instanceof FileSystemDirectoryHandle) {
+      await this.selectedFile!.data.getFileHandle(value, { create: true });
 
-      if (this.selectedFile) {
-        this.selectedFile.children = await this.convertDirectoryContentToTreeNodes(this.currentFileSystemHandle);
-      }
+      this.reloadCurrentDirectory();
     }
 
     this.newFileDialog = false;
+  }
+
+  async reloadCurrentDirectory() {
+    if (!this.selectedFile?.data) return;
+
+    this.selectedFile.children = await this.convertDirectoryContentToTreeNodes(
+      this.selectedFile.data as FileSystemDirectoryHandle,
+    );
   }
 }
