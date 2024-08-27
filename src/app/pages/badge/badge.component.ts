@@ -2,17 +2,20 @@ import { Component } from '@angular/core';
 import { Button } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
+import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-badge',
   standalone: true,
-  imports: [Button, InputNumberModule, FormsModule],
+  imports: [Button, InputNumberModule, FormsModule, MessagesModule],
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.css',
 })
 export class BadgeComponent {
   unreadCount = 24;
-  message = '';
+
+  messages: Message[] = [];
 
   async setBadge() {
     // Check if the badge is supported
@@ -29,7 +32,7 @@ export class BadgeComponent {
     // Set the badge
     navigator.setAppBadge(this.unreadCount).catch((error) => {
       //Do something with the error.
-      this.message = error.toString();
+      this.messages = [{ severity: 'error', summary: 'Error', detail: error.toString() }];
     });
   }
 
@@ -37,6 +40,7 @@ export class BadgeComponent {
     // Clear the badge
     navigator.clearAppBadge().catch((error) => {
       //Do something with the error.
+      this.messages = [{ severity: 'error', summary: 'Error', detail: error.toString() }];
     });
   }
 
@@ -46,11 +50,17 @@ export class BadgeComponent {
     switch (permissionStatus.state) {
       case 'granted':
         // You can use the Badging API
-        this.message = 'Permission granted';
+        this.messages = [{ severity: 'success', summary: 'Permission granted', detail: 'You can use the Badging API' }];
         break;
       case 'denied':
         // The user has denied the permission
-        this.message = 'Permission denied';
+        this.messages = [
+          {
+            severity: 'error',
+            summary: 'Permission denied',
+            detail: 'You need to grant permission to use the Badging API',
+          },
+        ];
         break;
       default:
         // The user has not yet granted or denied the permission
@@ -63,7 +73,7 @@ export class BadgeComponent {
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
       // You can now use the Badging API
-      this.message = 'Permission granted';
+      this.messages = [{ severity: 'success', summary: 'Permission granted', detail: 'You can use the Badging API' }];
     }
   }
 }

@@ -1,5 +1,18 @@
-<p-inputNumber [(ngModel)]="unreadCount"></p-inputNumber>
-<p-button (onClick)="setBadge()" label="Badge" />
-<p-button (onClick)="clearBadge()" label="Clear" />
+<p>
+  Input a number to set the badge on the message icon. Click the set button to set the badge and click the clear button
+  to clear the badge.
+</p>
+<p>iOS needs to be installed on the home screen to see the badge and granted permission to show notifications.</p>
+<p>Android is not supported.</p>
 
-Message: {{ message }}
+<p-messages [(value)]="messages"></p-messages>
+
+<div class="grid">
+  <div class="col-12">
+    <p-inputNumber [(ngModel)]="unreadCount"></p-inputNumber>
+  </div>
+  <div class="col-12">
+    <p-button (onClick)="setBadge()" label="Set" />
+    <p-button (onClick)="clearBadge()" class="ml-1" [outlined]="true" [severity]="'danger'" label="Clear" />
+  </div>
+</div>
