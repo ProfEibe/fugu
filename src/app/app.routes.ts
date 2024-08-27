@@ -3,6 +3,7 @@ import { BadgeComponent } from './pages/badge/badge.component';
 import { ContactPickerComponent } from './pages/contact-picker/contact-picker.component';
 import { HomeComponent } from './pages/home/home.component';
 import { FileAccessComponent } from './pages/file-access/file-access.component';
+import { PipComponent } from './pages/pip/pip.component';
 
 export const routes: Routes = [
   {
@@ -21,5 +22,9 @@ export const routes: Routes = [
   {
     path: 'files',
     component: FileAccessComponent,
+  },
+  {
+    path: 'pip',
+    component: PipComponent,
   },
 ];

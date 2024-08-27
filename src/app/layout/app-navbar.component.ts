@@ -37,6 +37,11 @@ export class AppNavbarComponent {
         icon: 'pi pi-fw pi-file',
         routerLink: '/files',
       },
+      {
+        label: 'PIP',
+        icon: 'pi pi-fw pi-image',
+        routerLink: '/pip',
+      },
     ];
   }
 }
