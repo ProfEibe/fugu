@@ -27,11 +27,10 @@
       />
       <p-progressBar [value]="bar3" styleClass="mt-1" />
     </div>
+    <div class="my-1">{{ total }} Teilnehmer</div>
   </div>
-</div>
 
-<div class="mt-5">
-  <p-button (onClick)="openPip()" label="Open Pip" />
-
-  {{ antworten | json }}
+  <div class="mt-5">
+    <p-button (onClick)="openPip()" label="Open Pip" />
+  </div>
 </div>

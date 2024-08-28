@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
-import PocketBase, { RecordService } from 'pocketbase';
+import PocketBase from 'pocketbase';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -21,28 +21,13 @@ interface Survey {
 })
 export class PipComponent implements OnInit, OnDestroy {
   pb = new PocketBase('https://fugu.jakobs.io');
-  antwort1 = false;
+
   bar1 = 0;
   bar2 = 0;
   bar3 = 0;
-
-  subscription: Promise<any> | undefined;
+  total = 0;
 
   recordId: string | null = null;
-  umfrage: any[] = [
-    {
-      name: 'Antwort 1',
-      key: 'antwort1',
-    },
-    {
-      name: 'Antwort 2',
-      key: 'antwort2',
-    },
-    {
-      name: 'Antwort 3',
-      key: 'antwort3',
-    },
-  ];
 
   data: Survey = {
     antwort1: false,
@@ -50,32 +35,29 @@ export class PipComponent implements OnInit, OnDestroy {
     antwort3: false,
   };
 
-  antworten: any;
-
-  ngOnInit() {
+  async ngOnInit() {
     this.recordId = localStorage.getItem('recordId');
-    console.log('recordId', this.recordId);
     if (this.recordId) {
       this.pb
         .collection('umfrage')
         .getOne<Survey>(this.recordId)
         .then((data) => {
-          console.log(data);
           this.data = data;
+        })
+        .catch(() => {
+          localStorage.removeItem('recordId');
+          this.recordId = null;
         });
     }
     this.getData();
 
-    this.subscription = this.pb.collection('umfrage').subscribe('*', (e) => {
-      console.log(e.action);
-      console.log(e.record);
-
+    await this.pb.collection('umfrage').subscribe('*', () => {
       this.getData();
     });
   }
 
-  ngOnDestroy() {
-    //this.subscription!.unsubscribe();
+  async ngOnDestroy() {
+    await this.pb.collection('umfrage').unsubscribe();
   }
 
   async openPip() {
@@ -123,11 +105,10 @@ export class PipComponent implements OnInit, OnDestroy {
           },
         );
 
-        console.log(antworten);
-
         this.bar1 = (antworten.antwort1 / total) * 100;
         this.bar2 = (antworten.antwort2 / total) * 100;
         this.bar3 = (antworten.antwort3 / total) * 100;
+        this.total = total;
       });
   }
 
@@ -155,8 +136,7 @@ export class PipComponent implements OnInit, OnDestroy {
 
   async update() {
     if (this.recordId) {
-      const foo = await this.pb.collection('umfrage').update(this.recordId, this.data);
-      console.log(foo);
+      await this.pb.collection('umfrage').update(this.recordId, this.data);
     } else {
       const foo = await this.pb.collection('umfrage').create(this.data);
       this.recordId = foo.id;
