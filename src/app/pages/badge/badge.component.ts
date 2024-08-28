@@ -19,7 +19,7 @@ export class BadgeComponent {
 
   async setBadge() {
     // Check if the badge is supported
-    if (!('setAppBadge' in navigator)) {
+    if (!navigator.setAppBadge) {
       console.log('Badge is not supported');
       return;
     }
