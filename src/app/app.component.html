@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
 
 <main>
+  <p-button label="Install PWA" [class]="{ hidden: hidden }" (onClick)="installPwa()"></p-button>
   <router-outlet></router-outlet>
 </main>

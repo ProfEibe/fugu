@@ -31,7 +31,6 @@ export class AppNavbarComponent implements OnInit, OnDestroy {
       .getFullList<{ label: string; icon: string; routerLink: string; active: boolean; order: number }>()
       .then((menu) => {
         this.items = menu.filter((i) => i.active).sort((a, b) => a.order - b.order);
-        console.log(this.items);
       });
   }
 
