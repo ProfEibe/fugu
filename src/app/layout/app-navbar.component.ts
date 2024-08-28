@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
 import { RouterLink } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
+import PocketBase from 'pocketbase';
 
 @Component({
   selector: 'app-navbar',
@@ -12,36 +13,29 @@ import { MenuModule } from 'primeng/menu';
   templateUrl: './app-navbar.component.html',
   styleUrls: ['./app-navbar.component.css'],
 })
-export class AppNavbarComponent {
+export class AppNavbarComponent implements OnInit, OnDestroy {
+  pb = new PocketBase('https://fugu.jakobs.io');
   items: MenuItem[] | undefined;
 
-  constructor() {
-    this.items = [
-      {
-        label: 'Home',
-        icon: 'pi pi-fw pi-home',
-        routerLink: '/',
-      },
-      {
-        label: 'Badge',
-        icon: 'pi pi-fw pi-info',
-        routerLink: '/badge',
-      },
-      {
-        label: 'Contacts',
-        icon: 'pi pi-fw pi-users',
-        routerLink: '/contacts',
-      },
-      {
-        label: 'Files',
-        icon: 'pi pi-fw pi-file',
-        routerLink: '/files',
-      },
-      {
-        label: 'PIP',
-        icon: 'pi pi-fw pi-image',
-        routerLink: '/pip',
-      },
-    ];
+  async ngOnInit() {
+    await this.pb.collection('menu').subscribe('*', async () => {
+      this.loadMenu();
+    });
+
+    this.loadMenu();
+  }
+
+  loadMenu() {
+    this.pb
+      .collection('menu')
+      .getFullList<{ label: string; icon: string; routerLink: string; active: boolean; order: number }>()
+      .then((menu) => {
+        this.items = menu.filter((i) => i.active).sort((a, b) => a.order - b.order);
+        console.log(this.items);
+      });
+  }
+
+  async ngOnDestroy() {
+    await this.pb.collection('menu').unsubscribe();
   }
 }
