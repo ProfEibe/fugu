@@ -4,6 +4,7 @@ import { ContactPickerComponent } from './pages/contact-picker/contact-picker.co
 import { HomeComponent } from './pages/home/home.component';
 import { FileAccessComponent } from './pages/file-access/file-access.component';
 import { PipComponent } from './pages/pip/pip.component';
+import { ClipboardComponent } from './pages/clipboard/clipboard.component';
 
 export const routes: Routes = [
   {
@@ -26,5 +27,9 @@ export const routes: Routes = [
   {
     path: 'pip',
     component: PipComponent,
+  },
+  {
+    path: 'clipboard',
+    component: ClipboardComponent,
   },
 ];
