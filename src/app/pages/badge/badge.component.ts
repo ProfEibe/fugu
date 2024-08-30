@@ -19,13 +19,14 @@ export class BadgeComponent implements OnInit {
 
   ngOnInit() {
     // Check if the badge is supported
-    console.log((navigator as any).userAgentData.platform);
     if (!navigator.setAppBadge || (navigator as any).userAgentData.platform === 'Android') {
+      const platform = (navigator as any).userAgentData?.platform ?? 'this platform';
+
       this.messages = [
         {
           severity: 'error',
           summary: 'Error',
-          detail: 'Badge is not supported on ' + (navigator as any).userAgentData.platform,
+          detail: `Badge is not supported on ${platform}`,
         },
       ];
       this.supported = false;
