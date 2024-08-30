@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
@@ -12,18 +12,27 @@ import { Message } from 'primeng/api';
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.css',
 })
-export class BadgeComponent {
+export class BadgeComponent implements OnInit {
+  supported = true;
+  messages: Message[] = [];
   unreadCount = 24;
 
-  messages: Message[] = [];
+  ngOnInit() {
+    // Check if the badge is supported
+    console.log((navigator as any).userAgentData.platform);
+    if (!navigator.setAppBadge || (navigator as any).userAgentData.platform === 'Android') {
+      this.messages = [
+        {
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Badge is not supported on ' + (navigator as any).userAgentData.platform,
+        },
+      ];
+      this.supported = false;
+    }
+  }
 
   async setBadge() {
-    // Check if the badge is supported
-    if (!navigator.setAppBadge) {
-      console.log('Badge is not supported');
-      return;
-    }
-
     // Check Notification permission if iOS
     if (navigator.platform === 'iPhone' || navigator.platform === 'iPad' || navigator.platform === 'iPod') {
       await this.checkNotificationPermission();
