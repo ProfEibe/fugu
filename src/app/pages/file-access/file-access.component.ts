@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Button } from 'primeng/button';
 import { JsonPipe } from '@angular/common';
 import { TreeModule, TreeNodeExpandEvent, TreeNodeSelectEvent } from 'primeng/tree';
@@ -25,7 +25,8 @@ import { InputTextModule } from 'primeng/inputtext';
   templateUrl: './file-access.component.html',
   styleUrl: './file-access.component.css',
 })
-export class FileAccessComponent {
+export class FileAccessComponent implements OnInit {
+  supported = 'showDirectoryPicker' in self;
   treeNodes: TreeNode<FileSystemHandle>[] = [];
   selectedFile: TreeNode<FileSystemHandle> | undefined = undefined;
   fileContent = '';
@@ -56,6 +57,12 @@ export class FileAccessComponent {
 
   newDirectoryDialog = false;
   newFileDialog = false;
+
+  ngOnInit() {
+    if (!this.supported) {
+      this.supported = false;
+    }
+  }
 
   /* Directories */
   async openFSDirectory() {

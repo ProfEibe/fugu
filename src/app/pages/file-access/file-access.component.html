@@ -1,47 +1,51 @@
-<p-button label="Öffnen" (onClick)="openFSDirectory()" />
+@if (supported) {
+  <p-button label="Öffnen" (onClick)="openFSDirectory()" />
 
-{{ this.selectedFile?.label }}
+  {{ this.selectedFile?.label }}
 
-<div class="grid">
-  <div class="col-3">
-    <p-button
-      label="Neuer Ordner"
-      (onClick)="newDirectoryDialog = true"
-      [disabled]="this.selectedFile?.data?.kind !== 'directory'"
-    ></p-button>
-    <p-button
-      label="Neue Datei"
-      (onClick)="newFileDialog = true"
-      [disabled]="this.selectedFile?.data?.kind !== 'directory'"
-    ></p-button>
-    <p-tree
-      class="w-full"
-      [value]="treeNodes"
-      loadingMode="icon"
-      selectionMode="single"
-      [(selection)]="selectedFile"
-      (onNodeExpand)="loadTreeDirectory($event)"
-      (onNodeSelect)="loadFile($event)"
-    ></p-tree>
+  <div class="grid">
+    <div class="col-3">
+      <p-button
+        label="Neuer Ordner"
+        (onClick)="newDirectoryDialog = true"
+        [disabled]="this.selectedFile?.data?.kind !== 'directory'"
+      ></p-button>
+      <p-button
+        label="Neue Datei"
+        (onClick)="newFileDialog = true"
+        [disabled]="this.selectedFile?.data?.kind !== 'directory'"
+      ></p-button>
+      <p-tree
+        class="w-full"
+        [value]="treeNodes"
+        loadingMode="icon"
+        selectionMode="single"
+        [(selection)]="selectedFile"
+        (onNodeExpand)="loadTreeDirectory($event)"
+        (onNodeSelect)="loadFile($event)"
+      ></p-tree>
+    </div>
+    <div class="col">
+      <p-menubar [model]="menuItems"></p-menubar>
+      <textarea pInputTextarea [(ngModel)]="fileContent"></textarea>
+    </div>
   </div>
-  <div class="col">
-    <p-menubar [model]="menuItems"></p-menubar>
-    <textarea pInputTextarea [(ngModel)]="fileContent"></textarea>
-  </div>
-</div>
 
-<p-dialog [(visible)]="newDirectoryDialog" header="Neuer Ordner">
-  <input pInputText #newDirectoryName placeholder="Name" />
-  <ng-template pTemplate="footer">
-    <p-button label="Abbrechen" (onClick)="newDirectoryDialog = false"></p-button>
-    <p-button label="Erstellen" (onClick)="createDirectory(newDirectoryName.value)"></p-button>
-  </ng-template>
-</p-dialog>
+  <p-dialog [(visible)]="newDirectoryDialog" header="Neuer Ordner">
+    <input pInputText #newDirectoryName placeholder="Name" />
+    <ng-template pTemplate="footer">
+      <p-button label="Abbrechen" (onClick)="newDirectoryDialog = false"></p-button>
+      <p-button label="Erstellen" (onClick)="createDirectory(newDirectoryName.value)"></p-button>
+    </ng-template>
+  </p-dialog>
 
-<p-dialog [(visible)]="newFileDialog" header="Neue Datei">
-  <input pInputText #newFileName placeholder="Name" />
-  <ng-template pTemplate="footer">
-    <p-button label="Abbrechen" (onClick)="newFileDialog = false"></p-button>
-    <p-button label="Erstellen" (onClick)="createFile(newFileName.value)"></p-button>
-  </ng-template>
-</p-dialog>
+  <p-dialog [(visible)]="newFileDialog" header="Neue Datei">
+    <input pInputText #newFileName placeholder="Name" />
+    <ng-template pTemplate="footer">
+      <p-button label="Abbrechen" (onClick)="newFileDialog = false"></p-button>
+      <p-button label="Erstellen" (onClick)="createFile(newFileName.value)"></p-button>
+    </ng-template>
+  </p-dialog>
+} @else {
+  <p>File System Access API not supported</p>
+}
