@@ -9,10 +9,16 @@ import { Button } from 'primeng/button';
   styleUrl: './clipboard.component.css',
 })
 export class ClipboardComponent implements OnInit {
+  supported = 'clipboard' in navigator;
   pastedText = '';
   pastedImage = '';
 
   ngOnInit() {
+    if (!this.supported) {
+      console.log('Clipboard API not available');
+      return;
+    }
+
     document.addEventListener('copy', async (e) => {
       e.preventDefault();
       this.copyFugu();
@@ -57,7 +63,7 @@ export class ClipboardComponent implements OnInit {
   }
 
   async pasteText() {
-    const queryOpts: any = { name: 'clipboard-read', allowWithoutGesture: false };
+    /*const queryOpts: any = { name: 'clipboard-read', allowWithoutGesture: false };
     const permissionStatus = await navigator.permissions.query(queryOpts);
     // Will be 'granted', 'denied' or 'prompt':
     console.log(permissionStatus.state);
@@ -65,7 +71,7 @@ export class ClipboardComponent implements OnInit {
     // Listen for changes to the permission state
     permissionStatus.onchange = () => {
       console.log(permissionStatus.state);
-    };
+    };*/
 
     try {
       this.pastedText = await navigator.clipboard.readText();
