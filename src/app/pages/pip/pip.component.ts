@@ -21,6 +21,7 @@ interface Survey {
 })
 export class PipComponent implements OnInit, OnDestroy {
   pb = new PocketBase('https://fugu.jakobs.io');
+  supported = 'documentPictureInPicture' in window;
 
   bar1 = 0;
   bar2 = 0;
