@@ -78,5 +78,35 @@
       "url": "/contacts",
       "icons": [{ "src": "/maskable_icon_x192.png", "sizes": "192x192" }]
     }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot_1.png",
+      "sizes": "2880x1620",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Home screen"
+    },
+    {
+      "src": "screenshot_2.png",
+      "sizes": "2880x1620",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "File System Access API"
+    },
+    {
+      "src": "screenshot_3.png",
+      "sizes": "1082x2402",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Home screen"
+    },
+    {
+      "src": "screenshot_4.png",
+      "sizes": "1082x2402",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Badging API"
+    }
   ]
 }
