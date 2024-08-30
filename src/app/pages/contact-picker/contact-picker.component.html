@@ -1,8 +1,22 @@
 @if (supported) {
   <p-button label="Contact Picker" (onClick)="getContacts()" />
 
-  Supported Properties:
-  {{ supportedProperties | json }}
+  <div class="card">
+    <div class="flex flex-column gap-2">
+      Supported Properties:
+      @for (prop of supportedProperties; track prop) {
+        <div class="flex align-items-center">
+          <p-checkbox
+            [(ngModel)]="selectedProperties"
+            label="{{ prop }}"
+            name="{{ prop }}"
+            value="{{ prop }}"
+            [disabled]="prop === 'name'"
+          />
+        </div>
+      }
+    </div>
+  </div>
 
   <p-table [value]="contacts" [paginator]="true" [rows]="5">
     <ng-template pTemplate="header">
@@ -15,7 +29,11 @@
     <ng-template pTemplate="body" let-contact>
       <tr>
         <td *ngIf="supportedProperties.includes('icon')">
-          <img [src]="contact.icon[0] | blob2img" alt="icon" />
+          @if (contact.icon[0]) {
+            <img [src]="contact.icon[0] | blob2img" alt="icon" />
+          } @else {
+            NoIcon
+          }
         </td>
         <td>{{ contact.name }}</td>
         <td>{{ contact.email }}</td>
@@ -23,7 +41,7 @@
     </ng-template>
   </p-table>
 
-  {{ contacts | json }}
+  <pre>{{ contacts | json }}</pre>
 } @else {
   <p>Not supported</p>
 

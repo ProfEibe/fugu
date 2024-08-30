@@ -3,6 +3,8 @@ import { Button } from 'primeng/button';
 import { JsonPipe, NgIf } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { Blob2imgPipe } from './blob2img.pipe';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormsModule } from '@angular/forms';
 
 interface Contact {
   icon: Blob[];
@@ -14,7 +16,7 @@ interface Contact {
 @Component({
   selector: 'app-contact-picker',
   standalone: true,
-  imports: [Button, JsonPipe, TableModule, Blob2imgPipe, NgIf],
+  imports: [Button, JsonPipe, TableModule, Blob2imgPipe, NgIf, CheckboxModule, FormsModule],
   templateUrl: './contact-picker.component.html',
   styleUrl: './contact-picker.component.css',
 })
@@ -23,6 +25,7 @@ export class ContactPickerComponent implements OnInit {
   api = (navigator as any).contacts || (navigator as any).mozContacts;
 
   supportedProperties: string[] = [];
+  selectedProperties: string[] = ['name'];
 
   errorMessage = '';
 
@@ -39,19 +42,8 @@ export class ContactPickerComponent implements OnInit {
       this.errorMessage = 'Contacts API is not supported in this browser.';
     }
 
-    const properties = [];
-    if (this.supportedProperties.includes('name')) {
-      properties.push('name');
-    }
-    if (this.supportedProperties.includes('email')) {
-      properties.push('email');
-    }
-    if (this.supportedProperties.includes('icon')) {
-      properties.push('icon');
-    }
-
     if (this.api?.select) {
-      this.contacts = await this.api.select(properties, { multiple: true });
+      this.contacts = await this.api.select(this.selectedProperties, { multiple: true });
     }
   }
 }
