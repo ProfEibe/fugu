@@ -1,16 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, viewChild } from '@angular/core';
 import { Button } from 'primeng/button';
-import PocketBase from 'pocketbase';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { JsonPipe, KeyValuePipe } from '@angular/common';
-
-interface Survey {
-  antwort3: boolean;
-  antwort1: boolean;
-  antwort2: boolean;
-}
 
 @Component({
   selector: 'app-pip',
@@ -19,54 +12,14 @@ interface Survey {
   templateUrl: './pip.component.html',
   styleUrl: './pip.component.css',
 })
-export class PipComponent implements OnInit, OnDestroy {
-  pb = new PocketBase('https://fugu.jakobs.io');
+export class PipComponent {
   supported = 'documentPictureInPicture' in window;
-
-  bar1 = 0;
-  bar2 = 0;
-  bar3 = 0;
-  total = 0;
-
-  recordId: string | null = null;
-
-  data: Survey = {
-    antwort1: false,
-    antwort2: false,
-    antwort3: false,
-  };
-
-  async ngOnInit() {
-    this.recordId = localStorage.getItem('recordId');
-    if (this.recordId) {
-      this.pb
-        .collection('umfrage')
-        .getOne<Survey>(this.recordId)
-        .then((data) => {
-          this.data = data;
-        })
-        .catch(() => {
-          localStorage.removeItem('recordId');
-          this.recordId = null;
-        });
-    }
-    this.getData();
-
-    await this.pb.collection('umfrage').subscribe('*', () => {
-      this.getData();
-    });
-  }
-
-  async ngOnDestroy() {
-    await this.pb.collection('umfrage').unsubscribe();
-  }
+  content = viewChild<ElementRef>('content');
 
   async openPip() {
-    const container = document.querySelector('#content');
-
     const pipWindow = await (window as any).documentPictureInPicture.requestWindow();
 
-    pipWindow.document.body.append(container);
+    pipWindow.document.body.append(this.content()?.nativeElement);
 
     this.copyStyles(pipWindow);
 
@@ -76,41 +29,6 @@ export class PipComponent implements OnInit, OnDestroy {
       const content = event.target.querySelector('#content');
       container!.append(content);
     });
-  }
-
-  private getData() {
-    this.pb
-      .collection('umfrage')
-      .getFullList<Survey>()
-      .then((data) => {
-        // calculate the percentage of each answer
-        const total = data.length;
-        const antworten = data.reduce(
-          (acc, { antwort1, antwort2, antwort3 }) => {
-            if (antwort1) {
-              acc.antwort1++;
-            }
-            if (antwort2) {
-              acc.antwort2++;
-            }
-            if (antwort3) {
-              acc.antwort3++;
-            }
-
-            return acc;
-          },
-          {
-            antwort1: 0,
-            antwort2: 0,
-            antwort3: 0,
-          },
-        );
-
-        this.bar1 = (antworten.antwort1 / total) * 100;
-        this.bar2 = (antworten.antwort2 / total) * 100;
-        this.bar3 = (antworten.antwort3 / total) * 100;
-        this.total = total;
-      });
   }
 
   private copyStyles(pipWindow: Window) {
@@ -133,15 +51,5 @@ export class PipComponent implements OnInit, OnDestroy {
         pipWindow.document.head.appendChild(link);
       }
     });
-  }
-
-  async update() {
-    if (this.recordId) {
-      await this.pb.collection('umfrage').update(this.recordId, this.data);
-    } else {
-      const foo = await this.pb.collection('umfrage').create(this.data);
-      this.recordId = foo.id;
-      localStorage.setItem('recordId', foo.id);
-    }
   }
 }

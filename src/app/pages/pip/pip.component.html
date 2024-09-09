@@ -1,34 +1,9 @@
 @if (supported) {
   <div id="content-container">
-    <div id="content" class="m-3">
+    <div id="content" #content class="m-3">
       <div class="my-1">
-        <p-checkbox
-          [(ngModel)]="data.antwort1"
-          [binary]="true"
-          label="Ich habe schon einmal Kugelfisch gegessen"
-          (onChange)="update()"
-        />
-        <p-progressBar [value]="bar1" styleClass="mt-1" />
+        <p>Picture-in-Picture API supported</p>
       </div>
-      <div class="my-1">
-        <p-checkbox
-          [(ngModel)]="data.antwort2"
-          [binary]="true"
-          label="Ich würde sehr gerne (noch)einmal Kugelfisch essen"
-          (onChange)="update()"
-        />
-        <p-progressBar [value]="bar2" styleClass="mt-1" />
-      </div>
-      <div class="my-1">
-        <p-checkbox
-          [(ngModel)]="data.antwort3"
-          [binary]="true"
-          label="Ich traue mich nicht Kugelfisch zu Essen"
-          (onChange)="update()"
-        />
-        <p-progressBar [value]="bar3" styleClass="mt-1" />
-      </div>
-      <div class="my-1">{{ total }} Teilnehmer</div>
     </div>
   </div>
 
