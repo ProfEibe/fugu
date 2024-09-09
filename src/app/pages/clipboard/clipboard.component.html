@@ -1,26 +1,15 @@
-@if (supported) {
-  <div class="grid">
-    <div class="col">
-      <p-button label="Copy URL" (onClick)="copyUrl()" />
-      <p-button label="Copy Fugu" (onClick)="copyFugu()" />
-    </div>
+<div class="grid">
+  <div class="col">
+    <p-button label="Copy URL" (onClick)="copyUrl()" />
   </div>
+</div>
 
-  <div class="grid">
-    <div class="col">
-      <p-button label="Paste Text" (onClick)="pasteText()" />
-      <p-button label="Paste Image" (onClick)="pasteClipboardContent()" />
-    </div>
+<div class="grid">
+  <div class="col">
+    <p-button label="Paste Text" (onClick)="pasteText()" />
   </div>
+</div>
 
-  <div class="grid">
-    <div class="col">{{ pastedText }}</div>
-    <div class="col">
-      @if (pastedImage) {
-        <img [src]="pastedImage" alt="pasted" />
-      }
-    </div>
-  </div>
-} @else {
-  <p>Clipboard API not supported</p>
-}
+<div class="grid">
+  <div class="col">{{ pastedText }}</div>
+</div>
