@@ -5,6 +5,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { FileAccessComponent } from './pages/file-access/file-access.component';
 import { PipComponent } from './pages/pip/pip.component';
 import { ClipboardComponent } from './pages/clipboard/clipboard.component';
+import { FurtherReadingComponent } from './further-reading/further-reading.component';
 
 export const routes: Routes = [
   {
@@ -31,5 +32,9 @@ export const routes: Routes = [
   {
     path: 'clipboard',
     component: ClipboardComponent,
+  },
+  {
+    path: 'further-reading',
+    component: FurtherReadingComponent,
   },
 ];

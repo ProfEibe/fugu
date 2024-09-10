@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { AppNavbarComponent } from './layout/app-navbar.component';
 import { ContactPickerComponent } from './pages/contact-picker/contact-picker.component';
@@ -8,7 +8,7 @@ import { Button } from 'primeng/button';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CardModule, AppNavbarComponent, ContactPickerComponent, Button],
+  imports: [RouterOutlet, CardModule, AppNavbarComponent, ContactPickerComponent, Button, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
