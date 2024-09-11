@@ -1,4 +1,4 @@
-@if (supported) {
+
   <div id="content-container">
     <div id="content" class="m-3">
       <div class="my-1">
@@ -31,7 +31,7 @@
       <div class="my-1">{{ total }} Teilnehmer</div>
     </div>
   </div>
-
+  @if (supported) {
   <div class="mt-5">
     <p-button (onClick)="openPip()" label="Open Pip" />
   </div>
